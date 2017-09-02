@@ -42,3 +42,22 @@ attach(US.month)
 US.month.ts <- ts(USun, start=c(1996,1), end=c(2006,10), freq = 12)
 layout(1:1)
 plot(US.month.ts, ylab = "unemployed (%)")
+
+
+#1.4.3 Multiple time series: Electricity, beer and chocolate data
+www <- "cbe.dat"
+CBE <- read.table(www,header = TRUE)
+CBE[1:4,]
+
+class(CBE)
+Elec.ts <- ts(CBE[,3], start = 1958, freq = 12)
+Beer.ts <- ts(CBE[,2], start = 1958, freq = 12)
+Choc.ts <- ts(CBE[,1], start = 1958, freq = 12)
+plot(cbind(Elec.ts, Beer.ts, Choc.ts))
+
+AP.elec <- ts.intersect(AP, Elec.ts)
+
+start(AP.elec)
+end(AP.elec)
+
+AP.elec[1:3,]
