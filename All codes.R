@@ -88,4 +88,12 @@ plot(Z.92.96, ylab = "Exchange rate in $NZ/pounds",
               xlab = "Time (years)")
 plot(Z.96.98, ylab = "Exchange rate in $NZ/pounds",
      xlab = "Time (years)")
-        
+
+#1.4.5 Global temperature series        
+www <-"global.dat"
+Global <- scan(www)
+Global.ts <- ts(Global, st= c(1856,1), end = c(2005,12), frequency = 12)
+Global.annual <-aggregate(Global.ts,FUN = mean)
+plot(Global.ts)
+plot(Global.annual)
+?aggregate()
