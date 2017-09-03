@@ -72,3 +72,20 @@ plot(as.vector(AP), as.vector(Elec),
      ylab = "Electricity production /Mwh")
 abline(reg = lm(Elec~AP))
 cor(AP,Elec)
+# 1.4.4 Quarterly exchange rate: GBP to NZ dollar
+www <- "pounds_nz.dat"
+Z <- read.table(www,header = T)
+Z[1:4,]
+Z.ts <- ts(Z, st =1991, freq=4)
+plot(Z.ts, xlab = "time/ years",
+            ylab= "Quarterly exchange rate in $NZ/ pounds")
+
+Z.92.96 <- window(Z.ts, start = c(1992,1), end =c(1996,1))
+Z.96.98 <- window(Z.ts, start =c(1996,1), end = c(1998,1))
+
+layout(1:2)
+plot(Z.92.96, ylab = "Exchange rate in $NZ/pounds",
+              xlab = "Time (years)")
+plot(Z.96.98, ylab = "Exchange rate in $NZ/pounds",
+     xlab = "Time (years)")
+        
