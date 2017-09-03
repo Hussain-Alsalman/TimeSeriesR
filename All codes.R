@@ -61,3 +61,14 @@ start(AP.elec)
 end(AP.elec)
 
 AP.elec[1:3,]
+
+AP <- AP.elec[,1]; Elec <- AP.elec[,2]
+layout(1:2)
+plot(AP, main = "Air Passengers", ylab = "Air Passengers /1000's")
+plot(Elec, main = "Electricity", ylab = "Electricity production / MkWh")
+
+plot(as.vector(AP), as.vector(Elec), 
+     xlab = "Air Passengers/1000's",
+     ylab = "Electricity production /Mwh")
+abline(reg = lm(Elec~AP))
+cor(AP,Elec)
