@@ -96,4 +96,17 @@ Global.ts <- ts(Global, st= c(1856,1), end = c(2005,12), frequency = 12)
 Global.annual <-aggregate(Global.ts,FUN = mean)
 plot(Global.ts)
 plot(Global.annual)
-?aggregate()
+
+New.series <- window(Global.ts, start= c(1970,1), end = c(2005,12))
+New.time <- time(New.series)
+plot(New.series); abline(reg = lm(New.series~New.time))
+
+#1.5 Decomposition of series
+
+plot(decompose(Elec.ts))
+
+Elec.decom <- decompose(Elec.ts, type = "mult")
+plot(Elec.decom)
+Trend <- Elec.decom$trend
+Seasonal <- Elec.decom$seasonal
+ts.plot(cbind(Trend, Trend*Seasonal), lty= 1:2)
