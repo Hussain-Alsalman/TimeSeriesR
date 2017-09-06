@@ -23,6 +23,7 @@ class(Maine.month)
 
 Maine.month.ts <- ts(unemploy, start = c(1996, 1), freq = 12)
 Maine.annual.ts <- aggregate(Maine.month.ts)/12
+# or aggregate(Maine.month.ts, FUN = mean)
 layout(1:2)
 plot(Maine.month.ts, ylab = "unemployed (%)")
 plot(Maine.annual.ts, ylab = "unemployed (%)")
@@ -110,3 +111,28 @@ plot(Elec.decom)
 Trend <- Elec.decom$trend
 Seasonal <- Elec.decom$seasonal
 ts.plot(cbind(Trend, Trend*Seasonal), lty= 1:2)
+
+# 1.7 Exercises
+#1 
+layout(1:1)
+plot(aggregate(Choc.ts), main = "Australia Chocolate \n Production during 1958 - 1990 ")
+plot(aggregate(Beer.ts), main = "Australia Beer \n Production during 1958 - 1990 ")
+
+boxplot(Choc.ts~cycle(Choc.ts))
+boxplot(Beer.ts~ cycle(Beer.ts))
+choc.ts.decom <- decompose(Choc.ts)
+plot(choc.ts.decom)
+ts.plot(cbind(choc.ts.decom$trend, choc.ts.decom$trend+choc.ts.decom$seasonal), lty = 1:2)
+
+#1 
+mot <- matrix(c(0.33, 18000,0.5,20000,2000,0.80,1500,1.6,40,40,20,60,3,80,2,120,2,200,1,360), byrow = TRUE, nrow = 5,ncol = 4,dimnames = list(c("car","petrol(litre)","servicing (h)","tyre","clutch"),c("q00","u.p00","q04","u.p04")))
+#LIt - Laspeyre Price Index 
+LIt<- sum(mot[,1]*mot[,4])/sum(mot[,1]*mot[,2])
+LIt
+#3 
+#a Paasche Price Index 
+PIt <- sum(mot[,3]*mot[,4])/sum(mot[,3]*mot[,2])
+#c 
+IFP<- sqrt(LIt*PIt)
+IFP
+
