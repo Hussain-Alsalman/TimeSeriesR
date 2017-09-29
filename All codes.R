@@ -1,3 +1,4 @@
+#==============================Chapter 1 ===================================
 #  1.4.1 A flying start: Air passenger bookings
 data(AirPassengers)
 AP <- AirPassengers
@@ -136,3 +137,42 @@ PIt <- sum(mot[,3]*mot[,4])/sum(mot[,3]*mot[,2])
 IFP<- sqrt(LIt*PIt)
 IFP
 
+#==============================Chapter 2 ===================================
+
+#2.2.1 Expected Value
+
+www <- "Herald.dat"
+Herald.dat <- read.table(www, header = T)
+attach(Herald.dat)
+
+x <- CO; y <- Benzoa; n <- length(x)
+#-----------------
+sum((x -mean(x))*(y-mean(y)))/(n-1)
+
+mean((x-mean(x))*(y -mean(y)))
+
+cov(x, y)
+#----------------
+cov(x,y)/(sd(x)*sd(y))
+
+cor(x,y) 
+
+#
+www <- "wave.dat"
+wave.dat <- read.table(www,header = T) ; attach(wave.dat)
+layout(1:2)
+plot(ts(waveht)); plot(ts(waveht[1:60]))
+layout(1:1)
+acf(waveht)$acf[2]
+
+plot(waveht[1:396], waveht[2:397])
+acf(waveht, type = c("covariance"))$acf[2]
+
+# 2.3.1  The correlogram General Discussion 
+acf(AirPassengers)
+layout(1:2)
+data("AirPassengers")
+AP <- AirPassengers
+AP.decom <- decompose(AP, "multiplicative")
+plot(ts(AP.decom$random[7:138]))
+acf(AP.decom$random[7:138])
