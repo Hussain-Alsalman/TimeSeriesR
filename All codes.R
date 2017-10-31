@@ -152,7 +152,9 @@ sum((x -mean(x))*(y-mean(y)))/(n-1)
 mean((x-mean(x))*(y -mean(y)))
 
 cov(x, y)
-#----------------
+
+#------------------
+
 cov(x,y)/(sd(x)*sd(y))
 
 cor(x,y) 
@@ -162,12 +164,19 @@ www <- "wave.dat"
 wave.dat <- read.table(www,header = T) ; attach(wave.dat)
 layout(1:2)
 plot(ts(waveht)); plot(ts(waveht[1:60]))
-layout(1:1)
-acf(waveht)$acf[2]
+# Formula of Ck (proof of concept)
+n <-length(waveht)
 
+ck <- 1/n* sum((waveht[1:(n-1)] - mean(waveht))*(waveht[2:n]- mean(waveht)))
+c0 <- 1/n * sum((waveht[1:n] - mean(waveht))* (waveht[1:n] - mean(waveht)))
+rk <- ck/c0
+
+ck/sd(waveht)
+acf(waveht)$acf[2] # This should equal to rk 
 plot(waveht[1:396], waveht[2:397])
-acf(waveht, type = c("covariance"))$acf[2]
-
+acf(waveht, type = c("covariance"))$acf[2] # This should equal to Ck
+acf.waveht<- acf(waveht)
+acf.waveht$type
 # 2.3.1  The correlogram General Discussion 
 acf(AirPassengers)
 layout(1:2)
@@ -176,3 +185,7 @@ AP <- AirPassengers
 AP.decom <- decompose(AP, "multiplicative")
 plot(ts(AP.decom$random[7:138]))
 acf(AP.decom$random[7:138])
+
+sd(AP[7:138])
+sd(AP[7:138]-AP.decom$trend[7:138])
+sd(AP.decom$random[7:138])
