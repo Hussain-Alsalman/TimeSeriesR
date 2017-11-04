@@ -189,3 +189,10 @@ acf(AP.decom$random[7:138])
 sd(AP[7:138])
 sd(AP[7:138]-AP.decom$trend[7:138])
 sd(AP.decom$random[7:138])
+
+# 2.3.3 Example based on the Font Reservior series 
+www <- "Fontdsdt.dat"
+Fontdsdt.dat <- read.table(www, header = T)
+attach(Fontdsdt.dat)
+plot(ts(adflow), ylab = 'adflow')
+acf(adflow, xlab = "lag (months)", main = "")
