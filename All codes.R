@@ -175,6 +175,7 @@ ck/sd(waveht)
 acf(waveht)$acf[2] # This should equal to rk 
 plot(waveht[1:396], waveht[2:397])
 acf(waveht, type = c("covariance"))$acf[2] # This should equal to Ck
+abline(h = 0, v = 0, col= "pink")
 acf.waveht<- acf(waveht)
 acf.waveht$type
 # 2.3.1  The correlogram General Discussion 
