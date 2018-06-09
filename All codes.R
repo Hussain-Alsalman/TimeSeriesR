@@ -197,3 +197,54 @@ Fontdsdt.dat <- read.table(www, header = T)
 attach(Fontdsdt.dat)
 plot(ts(adflow), ylab = 'adflow')
 acf(adflow, xlab = "lag (months)", main = "")
+
+
+#==============================Chapter 3 ===================================
+
+# 3.2.2 Building approvals publication
+
+www <- "ApprovActiv.dat"
+Build.dat <- read.table(www, header = TRUE); attach(Build.dat)
+App.ts <- ts(Approvals, start = c(1996, 1), freq = 4)
+Act.ts <- ts(Activity, start = c(1996, 1), freq = 4)
+ts.plot(App.ts, Act.ts, lty = c(1,3))
+
+acf(ts.union(App.ts, Act.ts))
+
+app.ran <- decompose(App.ts)$random
+app.ran.ts <- window (app.ran, start = c(1996, 3) )
+act.ran <- decompose (Act.ts)$random
+act.ran.ts <- window (act.ran, start = c(1996, 3) )
+acf(ts.union(app.ran.ts, act.ran.ts),na.action = na.pass)
+ccf(app.ran.ts, act.ran.ts, na.action = na.pass)
+
+print(acf(ts.union(app.ran.ts, act.ran.ts),na.action = na.pass))
+print(ccf(app.ran.ts, act.ran.ts, na.action = na.pass))
+
+
+# 3.3 Bass model
+#Example 
+
+T79 <- 1:10
+Tdelt <- (1:100)/10 
+Sales <- c(840,1470,2110,4000, 7590, 10950, 10530, 9470, 7790, 5890)
+Cusales <- cumsum(Sales)
+Bass.nls <-nls(Sales ~ M * ( ((P+Q)^2 / P) * exp(-(P+Q) * T79) ) /
+                 (1+(Q/P)*exp(-(P+Q)*T79))^2, start = list(M=60630, P=0.03, Q=0.38))
+summary(Bass.nls)
+
+
+Bcoef <- coef(Bass.nls)
+m <- Bcoef[1]
+p <- Bcoef[2]
+q <- Bcoef[3]
+
+ngete <- exp(-(p+q) * Tdelt)
+Bpdf <- m * ( (p+q)^2 / p ) * ngete / (1 + (q/p) * ngete)^2
+plot(Tdelt, Bpdf, xlab = "Year from 1979", ylab = "Sales per year", type='l')
+points(T79, Sales)
+
+Bcdf <- m * (1 - ngete)/(1 + (q/p)*ngete)
+plot(Tdelt, Bcdf, xlab = "Year from 1979",
+     ylab = "Cumulative sales", type='l')
+points(T79, Cusales)
