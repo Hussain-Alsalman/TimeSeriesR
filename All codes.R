@@ -1,5 +1,5 @@
 #==============================Chapter 1 ===================================
-#  1.4.1 A flying start: Air passenger bookings
+#----1.4.1 A flying start: Air passenger bookings-----
 data(AirPassengers)
 AP <- AirPassengers
 AP
@@ -14,7 +14,7 @@ layout(1:2)
 plot(aggregate(AP))
 boxplot(AP ~ cycle(AP))
 
-# 1.4.2 Unemployment: Maine
+#----1.4.2 Unemployment: Maine----
 
 # Make sure you have set your working directory to where your files are
 www <- "Maine.dat"
@@ -46,7 +46,7 @@ layout(1:1)
 plot(US.month.ts, ylab = "unemployed (%)")
 
 
-#1.4.3 Multiple time series: Electricity, beer and chocolate data
+#-----1.4.3 Multiple time series: Electricity, beer and chocolate data-----
 www <- "cbe.dat"
 CBE <- read.table(www,header = TRUE)
 CBE[1:4,]
@@ -74,7 +74,7 @@ plot(as.vector(AP), as.vector(Elec),
      ylab = "Electricity production /Mwh")
 abline(reg = lm(Elec~AP))
 cor(AP,Elec)
-# 1.4.4 Quarterly exchange rate: GBP to NZ dollar
+#--- 1.4.4 Quarterly exchange rate: GBP to NZ dollar----
 www <- "pounds_nz.dat"
 Z <- read.table(www,header = T)
 Z[1:4,]
@@ -91,7 +91,7 @@ plot(Z.92.96, ylab = "Exchange rate in $NZ/pounds",
 plot(Z.96.98, ylab = "Exchange rate in $NZ/pounds",
      xlab = "Time (years)")
 
-#1.4.5 Global temperature series        
+#----1.4.5 Global temperature series  ----      
 www <-"global.dat"
 Global <- scan(www)
 Global.ts <- ts(Global, st= c(1856,1), end = c(2005,12), frequency = 12)
@@ -103,7 +103,7 @@ New.series <- window(Global.ts, start= c(1970,1), end = c(2005,12))
 New.time <- time(New.series)
 plot(New.series); abline(reg = lm(New.series~New.time))
 
-#1.5 Decomposition of series
+#----1.5 Decomposition of series-----
 
 plot(decompose(Elec.ts))
 
@@ -113,7 +113,7 @@ Trend <- Elec.decom$trend
 Seasonal <- Elec.decom$seasonal
 ts.plot(cbind(Trend, Trend*Seasonal), lty= 1:2)
 
-# 1.7 Exercises
+#--1.7 Exercises
 #1 
 layout(1:1)
 plot(aggregate(Choc.ts), main = "Australia Chocolate \n Production during 1958 - 1990 ")
@@ -139,21 +139,21 @@ IFP
 
 #==============================Chapter 2 ===================================
 
-#2.2.1 Expected Value
+#----2.2.1 Expected Value-----
 
 www <- "Herald.dat"
 Herald.dat <- read.table(www, header = T)
 attach(Herald.dat)
 
 x <- CO; y <- Benzoa; n <- length(x)
-#-----------------
+#===---
 sum((x -mean(x))*(y-mean(y)))/(n-1)
 
 mean((x-mean(x))*(y -mean(y)))
 
 cov(x, y)
 
-#------------------
+#===---
 
 cov(x,y)/(sd(x)*sd(y))
 
@@ -164,7 +164,7 @@ www <- "wave.dat"
 wave.dat <- read.table(www,header = T) ; attach(wave.dat)
 layout(1:2)
 plot(ts(waveht)); plot(ts(waveht[1:60]))
-# Formula of Ck (proof of concept)
+#----Formula of Ck (proof of concept)-----
 n <-length(waveht)
 
 ck <- 1/n* sum((waveht[1:(n-1)] - mean(waveht))*(waveht[2:n]- mean(waveht)))
@@ -178,7 +178,7 @@ acf(waveht, type = c("covariance"))$acf[2] # This should equal to Ck
 abline(h = 0, v = 0, col= "pink")
 acf.waveht<- acf(waveht)
 acf.waveht$type
-# 2.3.1  The correlogram General Discussion 
+#----2.3.1  The correlogram General Discussion -----
 acf(AirPassengers)
 layout(1:2)
 data("AirPassengers")
@@ -191,7 +191,7 @@ sd(AP[7:138])
 sd(AP[7:138]-AP.decom$trend[7:138])
 sd(AP.decom$random[7:138])
 
-# 2.3.3 Example based on the Font Reservior series 
+#-----2.3.3 Example based on the Font Reservior series -----
 www <- "Fontdsdt.dat"
 Fontdsdt.dat <- read.table(www, header = T)
 attach(Fontdsdt.dat)
@@ -201,7 +201,7 @@ acf(adflow, xlab = "lag (months)", main = "")
 
 #==============================Chapter 3 ===================================
 
-# 3.2.2 Building approvals publication
+# -----3.2.2 Building approvals publication-----
 
 www <- "ApprovActiv.dat"
 Build.dat <- read.table(www, header = TRUE); attach(Build.dat)
@@ -222,7 +222,7 @@ print(acf(ts.union(app.ran.ts, act.ran.ts),na.action = na.pass))
 print(ccf(app.ran.ts, act.ran.ts, na.action = na.pass))
 
 
-# 3.3 Bass model
+# ----3.3 Bass model----
 #Example 
 
 T79 <- 1:10
@@ -232,7 +232,6 @@ Cusales <- cumsum(Sales)
 Bass.nls <-nls(Sales ~ M * ( ((P+Q)^2 / P) * exp(-(P+Q) * T79) ) /
                  (1+(Q/P)*exp(-(P+Q)*T79))^2, start = list(M=60630, P=0.03, Q=0.38))
 summary(Bass.nls)
-
 
 Bcoef <- coef(Bass.nls)
 m <- Bcoef[1]
@@ -248,3 +247,68 @@ Bcdf <- m * (1 - ngete)/(1 + (q/p)*ngete)
 plot(Tdelt, Bcdf, xlab = "Year from 1979",
      ylab = "Cumulative sales", type='l')
 points(T79, Cusales)
+
+#----3.4 Exponential smoothing & the Holt-Winters method----
+#----3.4.1 Exponential smoothing----
+
+www <- "motororg.dat"
+Motor.dat <- read.table(www, header = T); attach(Motor.dat)
+Comp.ts <- ts(complaints, start = c(1996, 1), freq = 12)
+plot(Comp.ts, xlab = "Time / months", ylab = "Complaints")
+
+Comp.hw1 <- HoltWinters(Comp.ts, beta = FALSE, gamma = FALSE); Comp.hw1
+plot(Comp.hw1)
+
+Comp.hw2 <- HoltWinters(Comp.ts, alpha = 0.2, beta = FALSE, gamma = FALSE)
+Comp.hw2
+plot(Comp.hw2)
+
+#----3.4.2 Holt-Winters method
+wine <- "wine.dat"
+wine.dat <- read.table(wine, header = T) ; attach (wine.dat)
+sweetw.ts <- ts(sweetw, start = c(1980,1), freq = 12)
+plot(sweetw.ts, xlab= "Time (months)", ylab = "sales (1000 litres)")
+sweetw.hw <- HoltWinters(sweetw.ts, seasonal = "mult")
+sweetw.hw ; sweetw.hw$coef ; sweetw.hw$SSE
+
+#----3.4.3 Four-year-ahead forecasts for the air passenger data----
+AP.hw <- HoltWinters(AP, seasonal = "mult")
+plot(AP.hw)
+
+AP.predict <- predict(AP.hw, n.ahead = 4*12)
+ts.plot(AP, AP.predict, lty = 1:2)
+
+#--------3.6 Exercises-----------
+#1.a 
+w <- 1:100
+k <- 100
+x <- w + k * rnorm(100)
+y <- w + k * rnorm(100)
+ccf(x,y)
+
+# for k = 1 & 10, there is a high crosscorrelation
+#However, as K reach 100 the crosscorrelation fades out 
+
+#1.b
+Time <- 1:370
+x <- sin(2*pi*Time/37)
+y <- sin(2*pi*(Time+4)/37)
+ccf(x,y)
+plot(x,y)
+
+#==============================Chapter 4 ===================================
+#-----4.2.3 Simulation in R------
+
+set.seed(1)
+w <- rnorm(100)
+plot(w,type = "l")
+
+x <- seq(-3,3,length = 1000)
+hist(rnorm(100), prob = TRUE); points(x,dnorm(x), type = "l")
+
+
+set.seed(2)
+acf(rnorm(100))
+
+
+
