@@ -190,7 +190,7 @@ acf(AP.decom$random[7:138])
 sd(AP[7:138])
 sd(AP[7:138]-AP.decom$trend[7:138])
 sd(AP.decom$random[7:138])
-
+layout(1:1)
 #-----2.3.3 Example based on the Font Reservior series -----
 www <- "Fontdsdt.dat"
 Fontdsdt.dat <- read.table(www, header = T)
@@ -310,5 +310,42 @@ hist(rnorm(100), prob = TRUE); points(x,dnorm(x), type = "l")
 set.seed(2)
 acf(rnorm(100))
 
+#---------4.3.7 Simulation Random Walk----------
 
+x <- w <- rnorm(1000)
+for (t in 2:1000) x[t] <- x[t-1] + w[t]
+plot(x, type = "l")
+acf(x)
 
+#---------4.4.1 Simulated random walk series-------------
+acf(diff(x))
+
+acf(diff(Z.ts))
+
+Z.hw <- HoltWinters(Z.ts, alpha = 1, gamma = 0)
+
+acf(resid(Z.hw))
+
+#---------4.4.3 Random walk with drift----------
+
+www <-  "HP.txt"
+HP.dat <- read.table(www, header = TRUE); attach(HP.dat)
+plot(as.ts(Price))
+layout(1:2)
+DP <- diff(Price); plot(as.ts(DP)); acf(DP)
+
+mean(DP) + c(1.96,-1.96) * sd(DP)/sqrt(length(DP))
+
+#---------4.5.5 Correlogram of an AR(1) process---------
+rho <- function(k, alpha) alpha^k
+layout(1:2)
+plot(0:10, rho(0:10,0.7), type = "b")
+plot(0:10, rho(0:10,-0.7), type = "b")
+layout(1:1)
+#---------4.5.6 Partial autocorrelation---------
+##set.seed(1)
+x <- w <- rnorm(1000)
+for (t in 2:100) x[t] <- 0.7*x[t-1] + w[t]
+plot(x, type = "l")
+acf(x)
+pacf(x)
